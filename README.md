@@ -11,10 +11,10 @@ go get github.com/DGPerryman/PokeSDK
 ## SDK Example Usage
 <!-- Start SDK Example Usage -->
 ```golang
-    import pokesdk "github.com/DGPerryman/PokeSDK"
+import pokesdk "github.com/DGPerryman/PokeSDK"
 
-	sdk := pokesdk.NewSdk()
-	pokemon, err := sdk.GetPokemonByName("pikachu")
+sdk := pokesdk.NewSdk()
+pokemon, err := sdk.GetPokemonByName("pikachu")
 ```
 <!-- End SDK Example Usage -->
 
