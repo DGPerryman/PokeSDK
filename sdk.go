@@ -9,18 +9,18 @@ import (
 type Sdk struct {
 	// client: used to make REST requests
 	client *client
-	// natures: caches natures returned
-	natures map[string]*Nature
-	// stats: caches stats returned
-	stats map[string]*Stat
+	// natures: caches natures by name
+	naturesByName map[string]*Nature
+	// stats: caches stats by name
+	statsByName map[string]*Stat
 }
 
 // NewSdk: creates a new Sdk
 func NewSdk() *Sdk {
 	return &Sdk{
-		client:  newClient(),
-		natures: map[string]*Nature{},
-		stats:   map[string]*Stat{},
+		client:        newClient(),
+		naturesByName: map[string]*Nature{},
+		statsByName:   map[string]*Stat{},
 	}
 }
 
@@ -31,13 +31,18 @@ func (s *Sdk) SetTimeout(timeout time.Duration) {
 
 // GetPokemonByID: gets Pokemon details by the given ID
 func (s *Sdk) GetPokemonByID(id int) (*Pokemon, error) {
-	return s.GetPokemonByName(strconv.Itoa(id))
+	return s.getPokemon(strconv.Itoa(id))
 }
 
 // GetPokemonByName: gets Pokemon details by the given name
 func (s *Sdk) GetPokemonByName(name string) (*Pokemon, error) {
+	return s.getPokemon(name)
+}
+
+// getPokemon: gets Pokemon details by the given name or id
+func (s *Sdk) getPokemon(nameOrID string) (*Pokemon, error) {
 	// Fetch the pokemon from the endpoint
-	ePokemon, err := s.client.getPokemon(name)
+	ePokemon, err := s.client.getPokemon(nameOrID)
 	if err != nil {
 		return nil, err
 	}
@@ -59,19 +64,25 @@ func (s *Sdk) GetPokemonByName(name string) (*Pokemon, error) {
 
 // GetNatureByID: gets nature details by the given ID
 func (s *Sdk) GetNatureByID(id int) (*Nature, error) {
-	return s.GetNatureByName(strconv.Itoa(id))
+	return s.getNature(strconv.Itoa(id))
 }
 
 // GetNatureByName: gets nature details by the given name
 func (s *Sdk) GetNatureByName(name string) (*Nature, error) {
 	// Check to see if the nature is already cached
-	cachedNature, found := s.natures[name]
+	cachedNature, found := s.naturesByName[name]
 	if found {
 		return cachedNature, nil
 	}
 
+	return s.getNature(name)
+}
+
+// getNature: gets nature details by the given name or ID
+func (s *Sdk) getNature(nameOrID string) (*Nature, error) {
+
 	// Fetch the nature from the endpoint
-	eNature, err := s.client.getNature(name)
+	eNature, err := s.client.getNature(nameOrID)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +91,7 @@ func (s *Sdk) GetNatureByName(name string) (*Nature, error) {
 	nature := convertNature(eNature)
 
 	// Cache the nature
-	s.natures[nature.Name] = nature
+	s.naturesByName[nature.Name] = nature
 
 	// Populate nature decreased stat
 	decreasedStat, err := s.GetStatByName(eNature.DecreasedStat.Name)
@@ -101,19 +112,25 @@ func (s *Sdk) GetNatureByName(name string) (*Nature, error) {
 
 // GetStatByID: gets stat details by the given ID
 func (s *Sdk) GetStatByID(id int) (*Stat, error) {
-	return s.GetStatByName(strconv.Itoa(id))
+	return s.getStat(strconv.Itoa(id))
 }
 
 // GetStatByName: gets stat details by the given name
 func (s *Sdk) GetStatByName(name string) (*Stat, error) {
 	// Check to see if the stat is already cached
-	cachedStat, found := s.stats[name]
+	cachedStat, found := s.statsByName[name]
 	if found {
 		return cachedStat, nil
 	}
 
+	return s.getStat(name)
+}
+
+// getStat: gets stat details by the given name or ID
+func (s *Sdk) getStat(nameOrID string) (*Stat, error) {
+
 	// Fetch the stat from the endpoint
-	eStat, err := s.client.getStat(name)
+	eStat, err := s.client.getStat(nameOrID)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +139,7 @@ func (s *Sdk) GetStatByName(name string) (*Stat, error) {
 	stat := convertStat(eStat)
 
 	// Cache the stat
-	s.stats[stat.Name] = stat
+	s.statsByName[stat.Name] = stat
 
 	// Populate increase affecting natures
 	for i, eNature := range eStat.AffectingNatures.Increase {

@@ -1,6 +1,6 @@
 package pokesdk
 
-// Nature: details of a Pokemon Nature with embedded stat details
+// Nature: details of a Pokemon Nature with references to full DecreasedStat/IncreasedStat details
 type Nature struct {
 	ID            int    `json:"id"`
 	Name          string `json:"name"`
@@ -38,7 +38,7 @@ type Nature struct {
 	} `json:"names"`
 }
 
-// Pokemon: details of a Pokemon with embedded stat details
+// Pokemon: details of a Pokemon with references to full stat details
 type Pokemon struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`
@@ -293,7 +293,7 @@ type Pokemon struct {
 	} `json:"past_types"`
 }
 
-// Stat: details of a Pokemon Stat with embedded nature details
+// Stat: details of a Pokemon Stat with references to full AffectingNatures details
 type Stat struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`

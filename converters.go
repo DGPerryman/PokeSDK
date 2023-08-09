@@ -1,35 +1,35 @@
 package pokesdk
 
-// convertNature: converts an endpoint nature to a nature
+// convertNature: converts an API nature to a nature
 // Leaves stat structs empty as they can be populated with further API calls
-func convertNature(eNature *apiNature) *Nature {
+func convertNature(aNature *apiNature) *Nature {
 	nature := &Nature{
-		ID:          eNature.ID,
-		Name:        eNature.Name,
-		LikesFlavor: eNature.LikesFlavor,
-		HatesFlavor: eNature.HatesFlavor,
+		ID:          aNature.ID,
+		Name:        aNature.Name,
+		LikesFlavor: aNature.LikesFlavor,
+		HatesFlavor: aNature.HatesFlavor,
 	}
 
 	// Create empty stats for now with just the Name set
 	// The full details may be fetched later
 	nature.DecreasedStat = &Stat{
-		Name: eNature.DecreasedStat.Name,
+		Name: aNature.DecreasedStat.Name,
 	}
 	nature.IncreasedStat = &Stat{
-		Name: eNature.IncreasedStat.Name,
+		Name: aNature.IncreasedStat.Name,
 	}
 
-	if eNature.PokeathlonStatChanges != nil {
+	if aNature.PokeathlonStatChanges != nil {
 		nature.PokeathlonStatChanges = make([]struct {
 			MaxChange      int "json:\"max_change\""
 			PokeathlonStat struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"pokeathlon_stat\""
-		}, len(eNature.PokeathlonStatChanges))
-		copy(nature.PokeathlonStatChanges, eNature.PokeathlonStatChanges)
+		}, len(aNature.PokeathlonStatChanges))
+		copy(nature.PokeathlonStatChanges, aNature.PokeathlonStatChanges)
 	}
-	if eNature.MoveBattleStylePreferences != nil {
+	if aNature.MoveBattleStylePreferences != nil {
 		nature.MoveBattleStylePreferences = make([]struct {
 			LowHpPreference  int "json:\"low_hp_preference\""
 			HighHpPreference int "json:\"high_hp_preference\""
@@ -37,39 +37,39 @@ func convertNature(eNature *apiNature) *Nature {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"move_battle_style\""
-		}, len(eNature.MoveBattleStylePreferences))
-		copy(nature.MoveBattleStylePreferences, eNature.MoveBattleStylePreferences)
+		}, len(aNature.MoveBattleStylePreferences))
+		copy(nature.MoveBattleStylePreferences, aNature.MoveBattleStylePreferences)
 	}
-	if eNature.Names != nil {
+	if aNature.Names != nil {
 		nature.Names = make([]struct {
 			Name     string "json:\"name\""
 			Language struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"language\""
-		}, len(eNature.Names))
-		copy(nature.Names, eNature.Names)
+		}, len(aNature.Names))
+		copy(nature.Names, aNature.Names)
 	}
 	return nature
 }
 
-// convertPokemon: converts an endpoint pokemon to a Pokemon
+// convertPokemon: converts an API pokemon to a pokemon
 // Leaves stat structs empty as they can be populated with further API calls
-func convertPokemon(ePokemon *apiPokemon) *Pokemon {
+func convertPokemon(aPokemon *apiPokemon) *Pokemon {
 	pokemon := &Pokemon{
-		ID:                     ePokemon.ID,
-		Name:                   ePokemon.Name,
-		BaseExperience:         ePokemon.BaseExperience,
-		Height:                 ePokemon.Height,
-		IsDefault:              ePokemon.IsDefault,
-		Order:                  ePokemon.Order,
-		Weight:                 ePokemon.Weight,
-		LocationAreaEncounters: ePokemon.LocationAreaEncounters,
-		Species:                ePokemon.Species,
-		Sprites:                ePokemon.Sprites,
+		ID:                     aPokemon.ID,
+		Name:                   aPokemon.Name,
+		BaseExperience:         aPokemon.BaseExperience,
+		Height:                 aPokemon.Height,
+		IsDefault:              aPokemon.IsDefault,
+		Order:                  aPokemon.Order,
+		Weight:                 aPokemon.Weight,
+		LocationAreaEncounters: aPokemon.LocationAreaEncounters,
+		Species:                aPokemon.Species,
+		Sprites:                aPokemon.Sprites,
 	}
 
-	if ePokemon.Abilities != nil {
+	if aPokemon.Abilities != nil {
 		pokemon.Abilities = make([]struct {
 			IsHidden bool "json:\"is_hidden\""
 			Slot     int  "json:\"slot\""
@@ -77,27 +77,27 @@ func convertPokemon(ePokemon *apiPokemon) *Pokemon {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"ability\""
-		}, len(ePokemon.Abilities))
-		copy(pokemon.Abilities, ePokemon.Abilities)
+		}, len(aPokemon.Abilities))
+		copy(pokemon.Abilities, aPokemon.Abilities)
 	}
-	if ePokemon.Forms != nil {
+	if aPokemon.Forms != nil {
 		pokemon.Forms = make([]struct {
 			Name string "json:\"name\""
 			URL  string "json:\"url\""
-		}, len(ePokemon.Forms))
-		copy(pokemon.Forms, ePokemon.Forms)
+		}, len(aPokemon.Forms))
+		copy(pokemon.Forms, aPokemon.Forms)
 	}
-	if ePokemon.GameIndices != nil {
+	if aPokemon.GameIndices != nil {
 		pokemon.GameIndices = make([]struct {
 			GameIndex int "json:\"game_index\""
 			Version   struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"version\""
-		}, len(ePokemon.GameIndices))
-		copy(pokemon.GameIndices, ePokemon.GameIndices)
+		}, len(aPokemon.GameIndices))
+		copy(pokemon.GameIndices, aPokemon.GameIndices)
 	}
-	if ePokemon.HeldItems != nil {
+	if aPokemon.HeldItems != nil {
 		pokemon.HeldItems = make([]struct {
 			Item struct {
 				Name string "json:\"name\""
@@ -110,22 +110,22 @@ func convertPokemon(ePokemon *apiPokemon) *Pokemon {
 					URL  string "json:\"url\""
 				} "json:\"version\""
 			} "json:\"version_details\""
-		}, len(ePokemon.HeldItems))
-		copy(pokemon.HeldItems, ePokemon.HeldItems)
-		for i2 := range ePokemon.HeldItems {
-			if ePokemon.HeldItems[i2].VersionDetails != nil {
+		}, len(aPokemon.HeldItems))
+		copy(pokemon.HeldItems, aPokemon.HeldItems)
+		for i2 := range aPokemon.HeldItems {
+			if aPokemon.HeldItems[i2].VersionDetails != nil {
 				pokemon.HeldItems[i2].VersionDetails = make([]struct {
 					Rarity  int "json:\"rarity\""
 					Version struct {
 						Name string "json:\"name\""
 						URL  string "json:\"url\""
 					} "json:\"version\""
-				}, len(ePokemon.HeldItems[i2].VersionDetails))
-				copy(pokemon.HeldItems[i2].VersionDetails, ePokemon.HeldItems[i2].VersionDetails)
+				}, len(aPokemon.HeldItems[i2].VersionDetails))
+				copy(pokemon.HeldItems[i2].VersionDetails, aPokemon.HeldItems[i2].VersionDetails)
 			}
 		}
 	}
-	if ePokemon.Moves != nil {
+	if aPokemon.Moves != nil {
 		pokemon.Moves = make([]struct {
 			Move struct {
 				Name string "json:\"name\""
@@ -142,10 +142,10 @@ func convertPokemon(ePokemon *apiPokemon) *Pokemon {
 					URL  string "json:\"url\""
 				} "json:\"move_learn_method\""
 			} "json:\"version_group_details\""
-		}, len(ePokemon.Moves))
-		copy(pokemon.Moves, ePokemon.Moves)
-		for i2 := range ePokemon.Moves {
-			if ePokemon.Moves[i2].VersionGroupDetails != nil {
+		}, len(aPokemon.Moves))
+		copy(pokemon.Moves, aPokemon.Moves)
+		for i2 := range aPokemon.Moves {
+			if aPokemon.Moves[i2].VersionGroupDetails != nil {
 				pokemon.Moves[i2].VersionGroupDetails = make([]struct {
 					LevelLearnedAt int "json:\"level_learned_at\""
 					VersionGroup   struct {
@@ -156,19 +156,19 @@ func convertPokemon(ePokemon *apiPokemon) *Pokemon {
 						Name string "json:\"name\""
 						URL  string "json:\"url\""
 					} "json:\"move_learn_method\""
-				}, len(ePokemon.Moves[i2].VersionGroupDetails))
-				copy(pokemon.Moves[i2].VersionGroupDetails, ePokemon.Moves[i2].VersionGroupDetails)
+				}, len(aPokemon.Moves[i2].VersionGroupDetails))
+				copy(pokemon.Moves[i2].VersionGroupDetails, aPokemon.Moves[i2].VersionGroupDetails)
 			}
 		}
 	}
-	if ePokemon.Stats != nil {
+	if aPokemon.Stats != nil {
 		pokemon.Stats = make([]struct {
 			BaseStat int   "json:\"base_stat\""
 			Effort   int   "json:\"effort\""
 			Stat     *Stat "json:\"stat\""
-		}, len(ePokemon.Stats))
+		}, len(aPokemon.Stats))
 
-		for i, stat := range ePokemon.Stats {
+		for i, stat := range aPokemon.Stats {
 			pokemon.Stats[i] = struct {
 				BaseStat int   "json:\"base_stat\""
 				Effort   int   "json:\"effort\""
@@ -183,17 +183,17 @@ func convertPokemon(ePokemon *apiPokemon) *Pokemon {
 			}
 		}
 	}
-	if ePokemon.Types != nil {
+	if aPokemon.Types != nil {
 		pokemon.Types = make([]struct {
 			Slot int "json:\"slot\""
 			Type struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"type\""
-		}, len(ePokemon.Types))
-		copy(pokemon.Types, ePokemon.Types)
+		}, len(aPokemon.Types))
+		copy(pokemon.Types, aPokemon.Types)
 	}
-	if ePokemon.PastTypes != nil {
+	if aPokemon.PastTypes != nil {
 		pokemon.PastTypes = make([]struct {
 			Generation struct {
 				Name string "json:\"name\""
@@ -206,93 +206,93 @@ func convertPokemon(ePokemon *apiPokemon) *Pokemon {
 					URL  string "json:\"url\""
 				} "json:\"type\""
 			} "json:\"types\""
-		}, len(ePokemon.PastTypes))
-		copy(pokemon.PastTypes, ePokemon.PastTypes)
-		for i2 := range ePokemon.PastTypes {
-			if ePokemon.PastTypes[i2].Types != nil {
+		}, len(aPokemon.PastTypes))
+		copy(pokemon.PastTypes, aPokemon.PastTypes)
+		for i2 := range aPokemon.PastTypes {
+			if aPokemon.PastTypes[i2].Types != nil {
 				pokemon.PastTypes[i2].Types = make([]struct {
 					Slot int "json:\"slot\""
 					Type struct {
 						Name string "json:\"name\""
 						URL  string "json:\"url\""
 					} "json:\"type\""
-				}, len(ePokemon.PastTypes[i2].Types))
-				copy(pokemon.PastTypes[i2].Types, ePokemon.PastTypes[i2].Types)
+				}, len(aPokemon.PastTypes[i2].Types))
+				copy(pokemon.PastTypes[i2].Types, aPokemon.PastTypes[i2].Types)
 			}
 		}
 	}
 	return pokemon
 }
 
-// convertStat: converts an endpoint stat to a stat
+// convertStat: converts an API stat to a stat
 // Leaves nature structs empty as they can be populated with further API calls
-func convertStat(eStat *apiStat) *Stat {
+func convertStat(aStat *apiStat) *Stat {
 	stat := &Stat{
-		ID:             eStat.ID,
-		Name:           eStat.Name,
-		GameIndex:      eStat.GameIndex,
-		IsBattleOnly:   eStat.IsBattleOnly,
-		AffectingMoves: eStat.AffectingMoves,
+		ID:             aStat.ID,
+		Name:           aStat.Name,
+		GameIndex:      aStat.GameIndex,
+		IsBattleOnly:   aStat.IsBattleOnly,
+		AffectingMoves: aStat.AffectingMoves,
 		AffectingNatures: struct {
 			Increase []*Nature "json:\"increase\""
 			Decrease []*Nature "json:\"decrease\""
 		}{},
 	}
-	if eStat.AffectingMoves.Increase != nil {
+	if aStat.AffectingMoves.Increase != nil {
 		stat.AffectingMoves.Increase = make([]struct {
 			Change int "json:\"change\""
 			Move   struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"move\""
-		}, len(eStat.AffectingMoves.Increase))
-		copy(stat.AffectingMoves.Increase, eStat.AffectingMoves.Increase)
+		}, len(aStat.AffectingMoves.Increase))
+		copy(stat.AffectingMoves.Increase, aStat.AffectingMoves.Increase)
 	}
-	if eStat.AffectingMoves.Decrease != nil {
+	if aStat.AffectingMoves.Decrease != nil {
 		stat.AffectingMoves.Decrease = make([]struct {
 			Change int "json:\"change\""
 			Move   struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"move\""
-		}, len(eStat.AffectingMoves.Decrease))
-		copy(stat.AffectingMoves.Decrease, eStat.AffectingMoves.Decrease)
+		}, len(aStat.AffectingMoves.Decrease))
+		copy(stat.AffectingMoves.Decrease, aStat.AffectingMoves.Decrease)
 	}
-	if eStat.AffectingNatures.Increase != nil {
-		stat.AffectingNatures.Increase = make([]*Nature, len(eStat.AffectingNatures.Increase))
+	if aStat.AffectingNatures.Increase != nil {
+		stat.AffectingNatures.Increase = make([]*Nature, len(aStat.AffectingNatures.Increase))
 
-		for i, nature := range eStat.AffectingNatures.Increase {
+		for i, nature := range aStat.AffectingNatures.Increase {
 			// Nature struct may be populated later
 			stat.AffectingNatures.Increase[i] = &Nature{
 				Name: nature.Name,
 			}
 		}
 	}
-	if eStat.AffectingNatures.Decrease != nil {
-		stat.AffectingNatures.Decrease = make([]*Nature, len(eStat.AffectingNatures.Decrease))
+	if aStat.AffectingNatures.Decrease != nil {
+		stat.AffectingNatures.Decrease = make([]*Nature, len(aStat.AffectingNatures.Decrease))
 
-		for i, nature := range eStat.AffectingNatures.Decrease {
+		for i, nature := range aStat.AffectingNatures.Decrease {
 			// Nature struct may be populated later
 			stat.AffectingNatures.Decrease[i] = &Nature{
 				Name: nature.Name,
 			}
 		}
 	}
-	if eStat.Characteristics != nil {
+	if aStat.Characteristics != nil {
 		stat.Characteristics = make([]struct {
 			URL string "json:\"url\""
-		}, len(eStat.Characteristics))
-		copy(stat.Characteristics, eStat.Characteristics)
+		}, len(aStat.Characteristics))
+		copy(stat.Characteristics, aStat.Characteristics)
 	}
-	if eStat.Names != nil {
+	if aStat.Names != nil {
 		stat.Names = make([]struct {
 			Name     string "json:\"name\""
 			Language struct {
 				Name string "json:\"name\""
 				URL  string "json:\"url\""
 			} "json:\"language\""
-		}, len(eStat.Names))
-		copy(stat.Names, eStat.Names)
+		}, len(aStat.Names))
+		copy(stat.Names, aStat.Names)
 	}
 	return stat
 }

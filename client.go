@@ -28,11 +28,11 @@ func (c *client) setTimeout(timeout time.Duration) {
 	c.httpClient.Timeout = timeout
 }
 
-// getPokemon: gets pokenmon details using the given name or ID
-func (c *client) getPokemon(parameter string) (*apiPokemon, error) {
+// getPokemon: gets pokemon details using the given name or ID
+func (c *client) getPokemon(nameOrID string) (*apiPokemon, error) {
 	var pokemon apiPokemon
 
-	err := c.callEndpoint("pokemon", parameter, &pokemon)
+	err := c.callEndpoint("pokemon", nameOrID, &pokemon)
 	if err != nil {
 		return nil, err
 	}
@@ -41,10 +41,10 @@ func (c *client) getPokemon(parameter string) (*apiPokemon, error) {
 }
 
 // getNature: gets nature details using the given name or ID
-func (c *client) getNature(parameter string) (*apiNature, error) {
+func (c *client) getNature(nameOrID string) (*apiNature, error) {
 	var nature apiNature
 
-	err := c.callEndpoint("nature", parameter, &nature)
+	err := c.callEndpoint("nature", nameOrID, &nature)
 	if err != nil {
 		return nil, err
 	}
@@ -53,10 +53,10 @@ func (c *client) getNature(parameter string) (*apiNature, error) {
 }
 
 // getStat: gets stat details using the given name or ID
-func (c *client) getStat(parameter string) (*apiStat, error) {
+func (c *client) getStat(nameOrID string) (*apiStat, error) {
 	var stat apiStat
 
-	err := c.callEndpoint("stat", parameter, &stat)
+	err := c.callEndpoint("stat", nameOrID, &stat)
 	if err != nil {
 		return nil, err
 	}
