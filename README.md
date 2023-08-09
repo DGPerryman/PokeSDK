@@ -35,7 +35,7 @@ pokemon, err := sdk.GetPokemonByName("pikachu")
 ### Design choices
 - Access to the SDK uses a struct, to avoid global variables and allow caching
 - Additional API calls are made to retrieve entities referenced by the requested item
-- Data from API calls is Converted into SDK models, so that the references between the structs can be correctly modelled
+- Data from API calls is converted into SDK models, so that the references between the structs can be correctly modelled
 - Natures and Stats are cached so in the SDK to avoid inifinite loops when peforming additional SDK calls
     - There are only 6 stats and 24 natures in total so the additional calls cannot take too long
 - SDK calls will return an error object, in case anything goes wrong with the API calls
